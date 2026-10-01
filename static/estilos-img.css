@@ -1,0 +1,51 @@
+/* Contenedor principal de productos */
+.producto-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    align-items: stretch; /* Hace que todas las tarjetas midan lo mismo de alto */
+}
+
+/* Tarjeta de producto individual */
+.product-card {
+    display: flex;
+    flex-direction: column; /* Alinea contenido verticalmente */
+    height: 100%; /* Ocupa todo el alto de la fila */
+    background: #fff;
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+    justify-content: space-between; /* Empuja el botón siempre al final */
+    border: 1px solid #f0f0f0;
+}
+
+/* Contenedor de la imagen para que no varíe el tamaño */
+.product-card img {
+    width: 100%;
+    aspect-ratio: 3 / 4; /* Proporción estándar de catálogo (ajustable) */
+    object-fit: contain; /* Muestra la imagen completa sin recortar */
+    background-color: #f9f9f9; /* Fondo suave para rellenar si la imagen es angosta */
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+/* Ajuste de textos para que no muevan el diseño */
+.product-card h3 {
+    font-size: 1rem;
+    margin: 10px 0;
+    min-height: 2.5em; /* Asegura espacio para 2 líneas de texto */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-card p {
+    font-weight: bold;
+    color: #C21833;
+    margin-bottom: 15px;
+}
+
+/* Botón siempre alineado al fondo */
+.btn-producto {
+    margin-top: auto; /* Empuja el botón hacia abajo independientemente del texto */
+}

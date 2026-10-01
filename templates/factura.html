@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cherry - Factura de Venta</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .invoice-card { background: white; border-radius: 16px; border: none; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 2.5rem; max-width: 800px; margin: auto; }
+        .btn-cherry { background-color: #e63946; color: white; font-weight: bold; }
+        .btn-cherry:hover { background-color: #d62828; color: white; }
+    </style>
+</head>
+<body>
+
+    <div class="container my-5">
+        <div class="invoice-card">
+            
+            <!-- ENCABEZADO DE FACTURA -->
+            <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
+                <div>
+                    <h2 class="fw-bold text-danger m-0">🍒 CHERRY</h2>
+                    <small class="text-muted">Moda y Estilo Urbano</small>
+                </div>
+                <div class="text-end">
+                    <h5 class="fw-bold m-0">FACTURA DE VENTA</h5>
+                    <span class="badge bg-danger rounded-pill px-3 py-2 mt-1">#FACT-{{ factura.id_factura if factura else '0012' }}</span>
+                </div>
+            </div>
+
+            <!-- DETALLES DE COMPRA Y CLIENTE DINÁMICOS -->
+            <div class="row mb-4">
+                <div class="col-6">
+                    <small class="text-muted text-uppercase fw-bold">Cliente</small>
+                    <h6 class="fw-bold mb-1">{{ factura.cliente if factura else 'Cliente Registrado' }}</h6>
+                    <p class="text-muted small m-0">{{ factura.direccion if factura else 'Dirección' }}</p>
+                    <p class="text-muted small m-0">Correo: {{ factura.correo if factura else 'N/A' }}</p>
+                </div>
+                <div class="col-6 text-end">
+                    <small class="text-muted text-uppercase fw-bold">Detalles de la transacción</small>
+                    <p class="m-0 small"><strong>Fecha:</strong> 20/08/2026</p>
+                    <p class="m-0 small"><strong>Método de pago:</strong> <span class="text-capitalize">{{ factura.metodo_pago if factura else 'Efectivo' }}</span></p>
+                    <p class="m-0 small"><strong>Estado:</strong> <span class="text-success fw-bold">Aprobado</span></p>
+                </div>
+            </div>
+
+          <!-- TABLA DE PRODUCTOS DINÁMICA -->
+            <div class="table-responsive mb-4">
+            <table class="table align-middle">
+            <thead class="table-light">
+            <tr>
+                <th>Producto</th>
+                <th class="text-center">Cant.</th>
+                <th class="text-end">Precio Unit.</th>
+                <th class="text-end">Total</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in factura.productos %}
+            <tr>
+                <td>
+                    <div class="fw-bold">{{ item.nombre }}</div>
+                </td>
+                <td class="text-center">{{ item.cantidad }}</td>
+                <td class="text-end">${{ "{:,.0f}".format(item.precio) }}</td>
+                <td class="text-end fw-bold">${{ "{:,.0f}".format(item.precio * item.cantidad) }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4" class="text-center text-muted">No hay productos registrados en esta factura.</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+           </div>
+
+<!-- TOTALES -->
+<div class="row justify-content-end mb-4">
+    <div class="col-md-5">
+        <div class="d-flex justify-content-between mb-2">
+            <span class="text-muted">Subtotal:</span>
+            <span>${{ "{:,.0f}".format(factura.total) }}</span>
+        </div>
+        <div class="d-flex justify-content-between mb-2">
+            <span class="text-muted">Envío:</span>
+            <span class="text-success fw-bold">Gratis</span>
+        </div>
+        <hr>
+        <div class="d-flex justify-content-between fs-5 fw-bold">
+            <span>Total Pagado:</span>
+            <span class="text-danger">${{ "{:,.0f}".format(factura.total) }}</span>
+        </div>
+    </div>
+</div> 
+
+            <!-- PIE DE FACTURA -->
+            <div class="text-center pt-3 border-top d-print-none">
+                <p class="text-muted small mb-3">¡Gracias por comprar en Cherry! Tu pedido ha sido registrado con éxito.</p>
+                <a href="{{ url_for('index') }}" class="btn btn-cherry rounded-pill px-4 me-2">
+                    <i class="bi bi-house-door-fill me-1"></i> Ir al Inicio
+                </a>
+                <button onclick="window.print()" class="btn btn-outline-dark rounded-pill px-4">
+                    <i class="bi bi-printer-fill me-1"></i> Imprimir Factura
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

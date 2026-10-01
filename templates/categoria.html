@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cherry - {{ titulo }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos-img.css') }}">
+    <style>
+        body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .product-card { border: none; border-radius: 12px; transition: transform 0.2s; background: white; }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.08); }
+        .product-img { height: 300px; object-fit: contain; border-top-left-radius: 12px; border-top-right-radius: 12px; }
+    </style>
+</head>
+
+<body>
+
+<header class="category-header text-white d-flex align-items-center" style="background-color: #C21833; height: 200px;">
+    <div class="container text-center">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb justify-content-center text-uppercase" style="font-size: 0.8rem; letter-spacing: 2px;">
+                <li class="breadcrumb-item"><a href="{{ url_for('index') }}" class="text-white-50 text-decoration-none">Inicio</a></li>
+                <li class="breadcrumb-item active text-white" aria-current="page">{{ titulo }}</li>
+            </ol>
+        </nav>
+        <h1 class="display-4 fw-bold">{{ titulo }}</h1>
+    </div>
+</header>
+
+<div id="side-cart" class="cherry-cart">
+    <div class="cart-header d-flex justify-content-between align-items-center p-3">
+        <h5 class="fw-bold m-0">TU BOLSA DE COMPRAS</h5>
+        <button class="btn-close-cart" type="button" onclick="toggleCart()" aria-label="Cerrar carrito" style="background:none; border:none; font-size: 2rem;">&times;</button>
+    </div>
+    <div class="cart-body p-3" id="cart-items-container">
+        </div>
+    <div class="cart-footer p-4">
+        <div class="d-flex justify-content-between mb-4">
+            <span class="fw-bold">TOTAL:</span>
+            <span class="fw-bold text-danger fs-5" id="cart-total">$0</span>
+        </div>
+        <a href="{{ url_for('checkout') }}" class="btn btn-danger w-100 rounded-pill mb-2">Finalizar pedido</a>
+        <button class="btn btn-outline-dark w-100 rounded-pill" onclick="toggleCart()">Seguir comprando</button>
+    </div>
+</div>
+
+    <div class="container my-5">
+        <!-- Encabezado de la Categoría -->
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-uppercase tracking-wider">{{ titulo }}</h2>
+            <p class="text-muted">Explora nuestra selección exclusiva en Cherry 🍒</p>
+        </div>
+
+        <!-- Listado de Productos -->
+        <div class="row g-4">
+            {% for producto in productos %}
+            <div class="col-md-4">
+                <div class="product-card shadow-sm border-0 rounded-4 overflow-hidden h-100 d-flex flex-column">
+                    <div class="img-container position-relative overflow-hidden bg-light" style="height: 300px;">
+                        <img src="{{ url_for('static', filename=producto.imagen) }}" class="card-img-top product-img" alt="{{ producto.nombre }}">
+                        <button type="button" class="btn btn-light btn-sm rounded-pill shadow-sm position-absolute bottom-0 start-50 translate-middle-x mb-3 px-3 py-2 quick-view-btn fw-semibold"
+                                onclick="llenarModal(this)"
+                                data-name="{{ producto.nombre }}"
+                                data-price="{{ producto.precio }}"
+                                data-image="{{ url_for('static', filename=producto.imagen) }}"
+                                data-bs-toggle="modal" data-bs-target="#quickViewModal">
+                            <i class="bi bi-eye me-1"></i> Vista rápida
+                        </button>
+                    </div>
+                    
+                    <div class="card-body d-flex flex-column justify-content-between flex-grow-1 text-center">
+                        <h5 class="card-title fw-bold fs-6 text-dark">{{ producto.nombre }}</h5>
+                        <p class="text-danger fw-bold fs-5 mt-auto mb-3">${{ "{:,.0f}".format(producto.precio) }}</p>
+                        
+                        <button class="btn-agregar rounded-pill w-100 py-2"
+                                data-name="{{ producto.nombre }}"
+                                data-price="{{ producto.precio }}"
+                                data-image="{{ url_for('static', filename=producto.imagen) }}"
+                                onclick="agregarCarrito(this.dataset.name, this.dataset.price, this.dataset.image)">
+                            <i class="bi bi-bag"></i> Añadir al carrito
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col-12 text-center py-5">
+                <i class="bi bi-bag-x fs-1 text-muted d-block mb-3"></i>
+                <h5 class="text-muted">No hay productos disponibles en esta categoría por el momento.</h5>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Botón de Volver al Inicio -->
+        <div class="text-center mt-5">
+            <a href="{{ url_for('index') }}" class="btn btn-outline-dark rounded-pill px-4">
+                <i class="bi bi-arrow-left me-2"></i> Volver al Inicio
+            </a>
+        </div>
+    </div>
+
+    <div class="modal fade" id="quickViewModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content rounded-5 border-0 shadow-lg overflow-hidden">
+                <div class="modal-body p-0">
+                    <button type="button" class="btn-close position-absolute top-0 end-0 m-3 z-3" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    <div class="row g-0">
+                        <div class="col-md-6">
+                            <div class="qv-image-container h-100">
+                                <img id="qv-img" src="" class="img-fluid h-100 w-100" style="object-fit: contain; min-height: 450px;" alt="Producto Cherry">
+                            </div>
+                        </div>
+                        <div class="col-md-6 p-4 p-lg-5 d-flex flex-column justify-content-center">
+                            <h2 id="qv-name" class="fw-bold mb-3"></h2>
+                            <span id="qv-price-new" class="fs-3 fw-bold text-dark mb-4"></span>
+                            <p class="text-muted small mb-4">Nuestra prenda estrella diseñada para resaltar tu estilo con la calidad premium de Cherry.</p>
+                            <button type="button" class="btn-agregar py-3 shadow-sm" id="qv-add-to-cart">
+                                <i class="bi bi-bag"></i> Agregar al carrito
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer-pro bg-dark text-white pt-5 pb-3">
+        <div class="container">
+            <div class="row g-4 mb-5">
+                <div class="col-md-3">
+                    <h2 class="logo text-danger mb-3">Cherry</h2>
+                    <p class="small text-muted">Moda femenina moderna que celebra a la mujer auténtica. Calidad, estilo y confianza en cada prenda.</p>
+                    <div class="contact-info small text-muted">
+                        <p><i class="bi bi-envelope me-2"></i> contactanos@cherryfashion.co</p>
+                        <p><i class="bi bi-telephone me-2"></i> +57 321 240 7075</p>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                <h6 class="fw-bold mb-4">Comprar</h6>
+                <ul class="list-unstyled small text-muted">
+                    <li class="mb-2">
+                       <a href="{{ url_for('ver_categoria', id_categoria=7) }}" class="text-decoration-none text-muted"> Mujer </a>
+                       </li>
+                    <li class="mb-2">
+                        <a href="{{ url_for('ver_categoria', id_categoria=8) }}" class="text-decoration-none text-muted">Hombre</a>
+                    </li>
+                    <li class="mb-2">
+                     <a href="{{ url_for('ver_categoria', id_categoria=9) }}" class="text-decoration-none text-muted">Ofertas</a>
+                    </li>
+                </ul>
+                </div>
+                <div class="col-md-2">
+                    <h6 class="fw-bold mb-4">Ayuda</h6>
+                    <ul class="list-unstyled small text-muted">
+                        <li class="mb-2"><a href="{{ url_for('faq') }}" class="text-decoration-none text-muted">Preguntas frecuentes</a></li>
+                        <li class="mb-2"><a href="{{ url_for('rastreo') }}" class="text-decoration-none text-muted">Rastrear pedido</a></li>
+                        <li class="mb-2"><a href="{{ url_for('devoluciones') }}" class="text-decoration-none text-muted">Devoluciones</a></li>
+                        <li class="mb-2"><a href="{{ url_for('contacto') }}" class="text-decoration-none text-muted">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-5">
+                    <h6 class="fw-bold mb-4 text-uppercase">Sé la primera en saberlo</h6>
+                    <p class="small text-muted">Suscríbete y recibe novedades, looks exclusivos y un 10% de descuento.</p>
+                    <div class="newsletter-box d-flex gap-2">
+                        <input type="email" class="form-control rounded-pill bg-transparent text-white border-secondary" placeholder="tu@email.com">
+                        <button class="btn btn-danger rounded-pill px-4">Suscribirse</button>
+                    </div>
+                </div>
+            </div>
+            <hr class="border-secondary">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                <p class="small text-muted mb-0">© 2026 Cherry Fashion. Todos los derechos reservados.</p>
+                <div class="payment-icons d-flex gap-2 opacity-50">
+                    <i class="bi bi-credit-card-2-front fs-4"></i>
+                    <i class="bi bi-wallet2 fs-4"></i>
+                    <i class="bi bi-paypal fs-4"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="cart-floating-btn" onclick="toggleCart()">
+        <i class="bi bi-bag-heart-fill"></i>
+        <span class="badge-count" id="cart-count">0</span>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='carrito-compartido.js') }}"></script>
+
+</body>
+</html>

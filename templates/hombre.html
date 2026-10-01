@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cherry - Colección Masculina</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="styles.css"> 
+    <link rel="stylesheet" href="estilos-img.css">
+</head>
+
+<body>
+
+<header class="category-header text-white d-flex align-items-center" style="background-color: #C21833; height: 200px;">
+    <div class="container text-center">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb justify-content-center text-uppercase" style="font-size: 0.8rem; letter-spacing: 2px;">
+                <li class="breadcrumb-item"><a href="index.html" class="text-white-50 text-decoration-none">Inicio</a></li>
+                <li class="breadcrumb-item active text-white" aria-current="page">Colección masculina</li>
+            </ol>
+        </nav>
+    </div>
+</header>
+
+<div class="row g-4">
+    <div class="text-center mb-5">
+        <h1 class="fw-bold text-uppercase" style="letter-spacing: 2px;">Colección Masculina</h1>
+        <p class="text-muted">Estilo urbano y confort para el hombre moderno.</p>
+    </div>
+
+    <div class="col-12 d-flex justify-content-center gap-2 mb-4">
+    <button class="badge bg-dark text-white border-0 rounded-pill px-3 py-2 btn-categoria active" data-filter="todos">Todo</button>
+    <button class="badge border text-dark bg-transparent rounded-pill px-3 py-2 btn-categoria" data-filter="camisas">Camisas</button>
+    <button class="badge border text-dark bg-transparent rounded-pill px-3 py-2 btn-categoria" data-filter="conjuntos">Conjuntos</button>
+    <button class="badge border text-dark bg-transparent rounded-pill px-3 py-2 btn-categoria" data-filter="pantalones">Pantalones</button>
+    <button class="badge border text-dark bg-transparent rounded-pill px-3 py-2 btn-categoria" data-filter="calzado">Calzado</button>
+    </div>
+
+
+    <div class="row g-4">
+
+        <div class="col-md-3 producto-item camisas">
+            <div class="product-card shadow-sm border-0 rounded-4 overflow-hidden">
+                <div class="img-container position-relative">
+                    <img src="imagenes/blusas-camisas/camisa blanca con diseño.png" class="img-fluid" alt="Cargo Urban">
+                    <span class="badge-tag bg-danger">Más Vendido</span>
+                    <div class="hover-overlay">
+                        <button class="btn-quick-view" onclick="llenarModal(this)" data-bs-toggle="modal" data-bs-target="#quickViewModal">Vista rápida</button>
+                    </div>
+                </div>
+                <div class="p-3 text-center">
+                    <small class="text-muted text-uppercase">Streetwear</small>
+                    <h6 class="fw-bold mb-2">Camiseta Gothic Edge</h6>
+                    <p class="text-danger fw-bold fs-5">$40.000</p>
+                    <button class="btn-agregar w-100 rounded-pill" onclick="agregarCarrito('Camiseta Gothic Edge', 40000)">Añadir al carrito</button>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="col-md-3 producto-item camisas">
+            <div class="product-card shadow-sm border-0 rounded-4 overflow-hidden">
+                <div class="img-container position-relative">
+                    <img src="imagenes/blusas-camisas/camisa blessd.png" class="img-fluid" alt="Cargo Urban">
+                    <span class="badge-tag bg-danger">Nuevo</span>
+                    <div class="hover-overlay">
+                        <button class="btn-quick-view" onclick="llenarModal(this)" data-bs-toggle="modal" data-bs-target="#quickViewModal">Vista rápida</button>
+                    </div>
+                </div>
+                <div class="p-3 text-center">
+                    <small class="text-muted text-uppercase">Urbano</small>
+                    <h6 class="fw-bold mb-2">Camiseta Blessed</h6>
+                    <p class="text-danger fw-bold fs-5">$50.000</p>
+                    <button class="btn-agregar w-100 rounded-pill" onclick="agregarCarrito('Camiseta Blessed', 50000)">Añadir al carrito</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 producto-item camisas">
+            <div class="product-card shadow-sm border-0 rounded-4 overflow-hidden">
+                <div class="img-container position-relative">
+                    <img src="imagenes/blusas-camisas/camisa beish.png" class="img-fluid" alt="Cargo Urban">
+                    <span class="badge-tag bg-danger">Más Vendido</span>
+                    <div class="hover-overlay">
+                        <button class="btn-quick-view" onclick="llenarModal(this)" data-bs-toggle="modal" data-bs-target="#quickViewModal">Vista rápida</button>
+                    </div>
+                </div>
+                <div class="p-3 text-center">
+                    <small class="text-muted text-uppercase">Urbano</small>
+                    <h6 class="fw-bold mb-2">Camisa DREAM Estilo Urbano</h6>
+                    <p class="text-danger fw-bold fs-5">$65.000</p>
+                    <button class="btn-agregar w-100 rounded-pill" onclick="agregarCarrito('Camisa DREAM Estilo Urbano', 65000)">Añadir al carrito</button>
+                </div>
+            </div>
+        </div>
+
+         <div class="col-md-3 producto-item camisas">
+            <div class="product-card shadow-sm border-0 rounded-4 overflow-hidden">
+                <div class="img-container position-relative">
+                    <img src="imagenes/blusas-camisas/camisa con botones casual.webp" class="img-fluid" alt="Cargo Urban">
+                    <span class="badge-tag bg-danger">Más Vendido</span>
+                    <div class="hover-overlay">
+                        <button class="btn-quick-view" onclick="llenarModal(this)" data-bs-toggle="modal" data-bs-target="#quickViewModal">Vista rápida</button>
+                    </div>
+                </div>
+                <div class="p-3 text-center">
+                    <small class="text-muted text-uppercase">Formal</small>
+                    <h6 class="fw-bold mb-2">Elegance Black Camisa Manga Corta</h6>
+                    <p class="text-danger fw-bold fs-5">$30.000</p>
+                    <button class="btn-agregar w-100 rounded-pill" onclick="agregarCarrito('Elegance Black Camisa Manga Corta', 30000)">Añadir al carrito</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 producto-item camisas">
+            <div class="product-card shadow-sm border-0 rounded-4 overflow-hidden">
+                <div class="img-container position-relative">
+                    <img src="imagenes/blusas-camisas/camisa sencilla.png" class="img-fluid" alt="Cargo Urban">
+                    <span class="badge-tag bg-danger">Clasico</span>
+                    <div class="hover-overlay">
+                        <button class="btn-quick-view" onclick="llenarModal(this)" data-bs-toggle="modal" data-bs-target="#quickViewModal">Vista rápida</button>
+                    </div>
+                </div>
+                <div class="p-3 text-center">
+                    <small class="text-muted text-uppercase">Camisetas</small>
+                    <h6 class="fw-bold mb-2">Camiseta LIVING LEGEND </h6>
+                    <p class="text-danger fw-bold fs-5">$36.700</p>
+                    <button class="btn-agregar w-100 rounded-pill" onclick="agregarCarrito('Camiseta LIVING LEGEND', 36700)">Añadir al carrito</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 producto-item conjuntos">
+            <div class="product-card shadow-sm border-0 rounded-4 overflow-hidden">
+                <div class="img-container position-relative">
+                    <img src="imagenes/conjunto camiseta y short.webp" class="img-fluid" alt="Cargo Urban">
+                    <span class="badge-tag bg-danger">Más Vendido</span>
+                    <div class="hover-overlay">
+                        <button class="btn-quick-view" onclick="llenarModal(this)" data-bs-toggle="modal" data-bs-target="#quickViewModal">Vista rápida</button>
+                    </div>
+                </div>
+                <div class="p-3 text-center">
+                    <small class="text-muted text-uppercase">Conjuntos</small>
+                    <h6 class="fw-bold mb-2">Conjunto New York Urban </h6>
+                    <p class="text-danger fw-bold fs-5">$70.000</p>
+                    <button class="btn-agregar w-100 rounded-pill" onclick="agregarCarrito('Conjunto New York Urban', 70000)">Añadir al carrito</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 producto-item conjuntos">
+            <div class="product-card shadow-sm border-0 rounded-4 overflow-hidden">
+                <div class="img-container position-relative">
+                    <img src="imagenes/conjunto pantalon y bermuda con diseño hombre.webp" class="img-fluid" alt="Cargo Urban">
+                    <span class="badge-tag bg-danger">Destacado</span>
+                    <div class="hover-overlay">
+                        <button class="btn-quick-view" onclick="llenarModal(this)" data-bs-toggle="modal" data-bs-target="#quickViewModal">Vista rápida</button>
+                    </div>
+                </div>
+                <div class="p-3 text-center">
+                    <small class="text-muted text-uppercase">Conjuntos</small>
+                    <h6 class="fw-bold mb-2">Conjunto Smiley Dripping Face</h6>
+                    <p class="text-danger fw-bold fs-5">$56.000</p>
+                    <button class="btn-agregar w-100 rounded-pill" onclick="agregarCarrito('Conjunto Smiley Dripping Face', 56000)">Añadir al carrito</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 producto-item conjuntos">
+            <div class="product-card shadow-sm border-0 rounded-4 overflow-hidden">
+                <div class="img-container position-relative">
+                    <img src="imagenes/conjunto sudadera con diseño.webp" class="img-fluid" alt="Cargo Urban">
+                    <span class="badge-tag bg-danger">Nuevo</span>
+                    <div class="hover-overlay">
+                        <button class="btn-quick-view" onclick="llenarModal(this)" data-bs-toggle="modal" data-bs-target="#quickViewModal">Vista rápida</button>
+                    </div>
+                </div>
+                <div class="p-3 text-center">
+                    <small class="text-muted text-uppercase">Conjuntos</small>
+                    <h6 class="fw-bold mb-2">Conjunto Street Struggle</h6>
+                    <p class="text-danger fw-bold fs-5">$58.000</p>
+                    <button class="btn-agregar w-100 rounded-pill" onclick="agregarCarrito('Conjunto Street Struggle', 58000)">Añadir al carrito</button>
+                </div>
+            </div>
+        </div>       
+
+        <div class="col-md-3 producto-item conjuntos">
+            <div class="product-card shadow-sm border-0 rounded-4 overflow-hidden">
+                <div class="img-container position-relative">
+                    <span class="badge-tag bg-danger">Nuevo</span>
+                    <img src="imagenes/conjunto sudadera.webp" class="img-fluid" alt="Conjunto LA">
+                    <div class="hover-overlay">
+                        <button class="btn-quick-view" onclick="llenarModal(this)" data-bs-toggle="modal" data-bs-target="#quickViewModal">Vista rápida</button>
+                    </div>
+                </div>
+                <div class="p-3 text-center">
+                    <small class="text-muted text-uppercase">Conjuntos</small>
+                    <h6 class="fw-bold mb-2">Conjunto LA Vibes</h6>
+                    <p class="text-danger fw-bold fs-5">75.000</p>
+                    <button class="btn-agregar w-100 rounded-pill" onclick="agregarCarrito('Conjunto LA Vibes', 75000)">Añadir al carrito</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 producto-item conjuntos">
+            <div class="product-card shadow-sm border-0 rounded-4 overflow-hidden">
+                <div class="img-container position-relative">
+                    <img src="imagenes/conjunto sudadera diseño.webp" class="img-fluid" alt="Cargo Urban">
+                    <span class="badge-tag bg-danger">Nuevo</span>
+                    <div class="hover-overlay">
+                        <button class="btn-quick-view" onclick="llenarModal(this)" data-bs-toggle="modal" data-bs-target="#quickViewModal">Vista rápida</button>
+                    </div>
+                </div>
+                <div class="p-3 text-center">
+                    <small class="text-muted text-uppercase">Conjuntos</small>
+                    <h6 class="fw-bold mb-2">Conjunto High Hopes Vibes</h6>
+                    <p class="text-danger fw-bold fs-5">$65.000</p>
+                    <button class="btn-agregar w-100 rounded-pill" onclick="agregarCarrito('Conjunto High Hopes Vibes', 65000)">Añadir al carrito</button>
+                </div>
+            </div>
+        </div>
+
+            
+        <div class="col-md-3 producto-item pantalones">
+            <div class="product-card shadow-sm border-0 rounded-4 overflow-hidden">
+                <div class="img-container position-relative">
+                    <img src="imagenes/pantalon para hombe cafe.webp" class="img-fluid" alt="Cargo Urban">
+                    <span class="badge-tag bg-danger">Más Vendido</span>
+                    <div class="hover-overlay">
+                        <button class="btn-quick-view" onclick="llenarModal(this)" data-bs-toggle="modal" data-bs-target="#quickViewModal">Vista rápida</button>
+                    </div>
+                </div>
+                <div class="p-3 text-center">
+                    <small class="text-muted text-uppercase">URBAN TECH</small>
+                    <h6 class="fw-bold mb-2">Pantalon cargo Urban Tech</h6>
+                    <p class="text-danger fw-bold fs-5">$85.000</p>
+                    <button class="btn-agregar w-100 rounded-pill" onclick="agregarCarrito('Pantalon cargo Urban Tech', 85000)">Añadir al carrito</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 producto-item pantalones">
+            <div class="product-card shadow-sm border-0 rounded-4 overflow-hidden">
+                <div class="img-container position-relative">
+                    <img src="imagenes/pantalones negros para hombre.webp" class="img-fluid" alt="Rebel Edge">
+                    <span class="badge-tag bg-dark">Slim Fit</span>
+                    <div class="hover-overlay">
+                        <button class="btn-quick-view" onclick="llenarModal(this)" data-bs-toggle="modal" data-bs-target="#quickViewModal">Vista rápida</button>
+                    </div>
+                </div>
+                <div class="p-3 text-center">
+                    <small class="text-muted text-uppercase">DENIM BLACK</small>
+                    <h6 class="fw-bold mb-2">Jeans Rebel Edge Destagados</h6>
+                    <p class="text-danger fw-bold fs-5">$90.000</p>
+                    <button class="btn-agregar w-100 rounded-pill" onclick="agregarCarrito('Jeans Rebel Edge Destagados', 90000)">Añadir al carrito</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 producto-item pantalones">
+            <div class="product-card shadow-sm border-0 rounded-4 overflow-hidden">
+                <div class="img-container position-relative">
+                    <img src="imagenes/pantalones cruces.webp" class="img-fluid" alt="Street Icon">
+                    <span class="badge-tag bg-danger">Nuevo</span>
+                    <div class="hover-overlay">
+                        <button class="btn-quick-view" onclick="llenarModal(this)" data-bs-toggle="modal" data-bs-target="#quickViewModal">Vista rápida</button>
+                    </div>
+                </div>
+                <div class="p-3 text-center">
+                    <small class="text-muted text-uppercase">STREETWEAR</small>
+                    <h6 class="fw-bold mb-2">Jeans Street Icon Cruces</h6>
+                    <p class="text-danger fw-bold fs-5">$82.000</p>
+                    <button class="btn-agregar w-100 rounded-pill" onclick="agregarCarrito('Jeans Street Icon Cruces', 82000)">Añadir al carrito</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 producto-item pantalones">
+            <div class="product-card shadow-sm border-0 rounded-4 overflow-hidden">
+                <div class="img-container position-relative">
+                    <img src="imagenes/pantalones con aberturas.webp" class="img-fluid" alt="Urban Grunge">
+                    <span class="badge-tag bg-danger">Destacado</span>
+                    <div class="hover-overlay">
+                        <button class="btn-quick-view" onclick="llenarModal(this)" data-bs-toggle="modal" data-bs-target="#quickViewModal">Vista rápida</button>
+                    </div>
+                </div>
+                <div class="p-3 text-center">
+                    <small class="text-muted text-uppercase">GRUNGE STYLE</small>
+                    <h6 class="fw-bold mb-2">Jeans Urban Grunge Desgastados</h6>
+                    <p class="text-danger fw-bold fs-5">$70.000</p>
+                    <button class="btn-agregar w-100 rounded-pill" onclick="agregarCarrito('Jeans Urban Grunge Desgastados', 70000)">Añadir al carrito</button>
+                </div>
+            </div>
+        </div>
+
+         <div class="col-md-3 producto-item pantalones">
+            <div class="product-card shadow-sm border-0 rounded-4 overflow-hidden">
+                <div class="img-container position-relative">
+                    <img src="imagenes/pantalon rallitas.webp" class="img-fluid" alt="Urban Grunge">
+                    <span class="badge-tag bg-danger">Nuevo</span>
+                    <div class="hover-overlay">
+                        <button class="btn-quick-view" onclick="llenarModal(this)" data-bs-toggle="modal" data-bs-target="#quickViewModal">Vista rápida</button>
+                    </div>
+                </div>
+                <div class="p-3 text-center">
+                    <small class="text-muted text-uppercase">Urbano</small>
+                    <h6 class="fw-bold mb-2">Jeans Street Vibe Rotos</h6>
+                    <p class="text-danger fw-bold fs-5">$63.000</p>
+                    <button class="btn-agregar w-100 rounded-pill" onclick="agregarCarrito('Jeans Street Vibe Rotos', 63000)">Añadir al carrito</button>
+                </div>
+            </div>
+        </div>
+ 
+        <div class="col-md-3 producto-item pantalones">
+            <div class="product-card shadow-sm border-0 rounded-4 overflow-hidden">
+                <div class="img-container position-relative">
+                    <img src="imagenes/jeans con letras.webp" class="img-fluid" alt="Urban Grunge">
+                    <span class="badge-tag bg-danger">Nuevo</span>
+                    <div class="hover-overlay">
+                        <button class="btn-quick-view" onclick="llenarModal(this)" data-bs-toggle="modal" data-bs-target="#quickViewModal">Vista rápida</button>
+                    </div>
+                </div>
+                <div class="p-3 text-center">
+                    <small class="text-muted text-uppercase">Urbano</small>
+                    <h6 class="fw-bold mb-2">Jeans Street Icon Wash & Wear</h6>
+                    <p class="text-danger fw-bold fs-5">$82.000</p>
+                    <button class="btn-agregar w-100 rounded-pill" onclick="agregarCarrito('Jeans Street Icon Wash & Wear', 82000)">Añadir al carrito</button>
+                </div>
+            </div>
+        </div>
+ 
+        <div class="col-md-3 producto-item pantalones">
+            <div class="product-card shadow-sm border-0 rounded-4 overflow-hidden">
+                <div class="img-container position-relative">
+                    <img src="imagenes/sudadera negra.webp" class="img-fluid" alt="Urban Grunge">
+                    <span class="badge-tag bg-danger">Nuevo</span>
+                    <div class="hover-overlay">
+                        <button class="btn-quick-view" onclick="llenarModal(this)" data-bs-toggle="modal" data-bs-target="#quickViewModal">Vista rápida</button>
+                    </div>
+                </div>
+                <div class="p-3 text-center">
+                    <small class="text-muted text-uppercase">SLIM FIT</small>
+                    <h6 class="fw-bold mb-2">Pantalones Cargo SZON Urban</h6>
+                    <p class="text-danger fw-bold fs-5">$50.000</p>
+                    <button class="btn-agregar w-100 rounded-pill" onclick="agregarCarrito('Pantalones Cargo SZON Urban', 50000)">Añadir al carrito</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 producto-item calzado">
+            <div class="product-card shadow-sm border-0 rounded-4 overflow-hidden">
+                <div class="img-container position-relative">
+                    <img src="imagenes/zapatos casuales blancas.webp" class="img-fluid" alt="Cargo Urban">
+                    <span class="badge-tag bg-danger">Nuevo</span>
+                    <div class="hover-overlay">
+                        <button class="btn-quick-view" onclick="llenarModal(this)" data-bs-toggle="modal" data-bs-target="#quickViewModal">Vista rápida</button>
+                    </div>
+                </div>
+                <div class="p-3 text-center">
+                    <small class="text-muted text-uppercase">Sneakers</small>
+                    <h6 class="fw-bold mb-2">Zapatos Urban Elite White</h6>
+                    <p class="text-danger fw-bold fs-5">$50.000</p>
+                    <button class="btn-agregar w-100 rounded-pill" onclick="agregarCarrito('Zapatos Urban Elite White', 50000)">Añadir al carrito</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 producto-item calzado">
+            <div class="product-card shadow-sm border-0 rounded-4 overflow-hidden">
+                <div class="img-container position-relative">
+                    <img src="imagenes/Zapatos antideslizantes con forro polar.webp" class="img-fluid" alt="Cargo Urban">
+                    <span class="badge-tag bg-danger">Más Vendido</span>
+                    <div class="hover-overlay">
+                        <button class="btn-quick-view" onclick="llenarModal(this)" data-bs-toggle="modal" data-bs-target="#quickViewModal">Vista rápida</button>
+                    </div>
+                </div>
+                <div class="p-3 text-center">
+                    <small class="text-muted text-uppercase">Botas</small>
+                    <h6 class="fw-bold mb-2">Botas Urbanas Fuego Polar</h6>
+                    <p class="text-danger fw-bold fs-5">$70.000</p>
+                    <button class="btn-agregar w-100 rounded-pill" onclick="agregarCarrito('Botas Urbanas Fuego Polar', 70000)">Añadir al carrito</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 producto-item calzado">
+            <div class="product-card shadow-sm border-0 rounded-4 overflow-hidden">
+                <div class="img-container position-relative">
+                    <img src="imagenes/Zapatos para correr hombre.webp" class="img-fluid" alt="Cargo Urban">
+                    <span class="badge-tag bg-danger">Nuevo</span>
+                    <div class="hover-overlay">
+                         <button class="btn-quick-view" onclick="llenarModal(this)" data-bs-toggle="modal" data-bs-target="#quickViewModal">Vista rápida</button>
+                    </div>
+                </div>
+                <div class="p-3 text-center">
+                    <small class="text-muted text-uppercase">Deportivos</small>
+                    <h6 class="fw-bold mb-2">Zapatos JUHONG Flame Runner</h6>
+                    <p class="text-danger fw-bold fs-5">$90.000</p>
+                    <button class="btn-agregar w-100 rounded-pill" onclick="agregarCarrito('Zapatos JUHONG Flame Runner', 90000)">Añadir al carrito</button>
+                </div>
+            </div>
+        </div>
+
+    </div> 
+</div> 
+<div id="side-cart" class="cherry-cart">
+    <div class="cart-header d-flex justify-content-between align-items-center p-3">
+        <h5 class="fw-bold m-0">TU CARRITO CHERRY</h5>
+        <button class="btn-close-cart" onclick="toggleCart()" style="background:none; border:none; font-size: 2rem;">&times;</button>
+    </div>
+    <div class="cart-body p-3" id="cart-items-container">
+        </div>
+    <div class="cart-footer p-4">
+        <div class="d-flex justify-content-between mb-4">
+            <span class="fw-bold">TOTAL:</span>
+            <span class="fw-bold text-danger fs-5" id="cart-total">$0</span>
+        </div>
+        <a href="checkout.html" class="btn btn-danger w-100 rounded-pill mb-2">Finalizar pedido</a>
+        <button class="btn btn-outline-dark w-100 rounded-pill" onclick="toggleCart()">Seguir comprando</button>
+    </div>
+</div>
+
+<footer class="footer-pro bg-dark text-white pt-5 pb-3">
+    <div class="container">
+        <div class="row g-4 mb-5">
+            <div class="col-md-3">
+                <h2 class="logo text-danger mb-3">Cherry</h2>
+                <p class="small text-muted">Moda femenina moderna que celebra a 
+                    la mujer auténtica. 
+                   Calidad, estilo y confianza en cada prenda.</p>
+                <div class="contact-info small text-muted">
+                    <p><i class="bi bi-envelope me-2"></i> contactanos@cherryfashion.co</p>
+                    <p><i class="bi bi-telephone me-2"></i> +57 321 240 7075</p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <h6 class="fw-bold mb-4">Comprar</h6>
+                <ul class="list-unstyled small text-muted">
+                    <li class="mb-2">
+                       <a href="mujer.html" class="text-decoration-none text-muted"> Mujer </a>
+                       </li>
+                    <li class="mb-2">
+                        <a href="hombre.html" class="text-decoration-none text-muted">Hombre</a>
+                    </li>
+                    <li class="mb-2">
+                     <a href="ofertas.html" class="text-decoration-none text-muted">Ofertas</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-2">
+                <h6 class="fw-bold mb-4">Ayuda</h6>
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <a href="faq.html" class="text-decoration-none text-muted">Preguntas frecuentes</a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="rastreo.html">Rastrear pedido</a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="devoluciones.html">Devoluciones</a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="contacto.html">Contacto</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-5">
+                <h6 class="fw-bold mb-4 text-uppercase">Sé la primera en saberlo</h6>
+                <p class="small text-muted">Suscríbete y recibe novedades, looks exclusivos y un 10% de descuento.</p>
+                <div class="newsletter-box d-flex gap-2">
+                    <input type="email" class="form-control rounded-pill bg-transparent text-white border-secondary" placeholder="tu@email.com">
+                    <button class="btn btn-danger rounded-pill px-4">Suscribirse</button>
+                </div>
+            </div>
+        </div>
+        <hr class="border-secondary">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <p class="small text-muted mb-0">© 2026 Cherry Fashion. Todos los derechos reservados.</p>
+            <div class="payment-icons d-flex gap-2 opacity-50">
+                <i class="bi bi-credit-card-2-front fs-4"></i>
+                <i class="bi bi-wallet2 fs-4"></i>
+                <i class="bi bi-paypal fs-4"></i>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<div class="modal fade" id="quickViewModal" tabindex="-1" aria-labelledby="quickViewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content rounded-5 border-0 shadow-lg overflow-hidden">
+            <div class="modal-body p-0">
+                <button type="button" class="btn-close position-absolute top-0 end-0 m-3 z-3" data-bs-dismiss="modal" aria-label="Close"></button>
+                
+                <div class="row g-0">
+                    <div class="col-md-6">
+                        <div class="qv-image-container h-100">
+                            <img id="qv-img" src="" class="img-fluid h-100 w-100" style="object-fit: cover; min-height: 450px;" alt="Producto Cherry">
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 p-4 p-lg-5 d-flex flex-column justify-content-center">
+                        <small id="qv-cat" class="text-uppercase text-muted fw-bold ls-2 mb-1" style="font-size: 0.7rem; letter-spacing: 2px;"></small>
+                        <h2 id="qv-name" class="fw-bold mb-3"></h2>
+                        
+                        <div class="qv-price mb-4">
+                            <span id="qv-price-new" class="fs-3 fw-bold text-dark"></span>
+                            <span id="qv-price-old" class="text-muted text-decoration-line-through ms-2 fs-5"></span>
+                        </div>
+                        
+                        <p class="text-muted small mb-4" id="qv-description">
+                            Nuestra prenda estrella diseñada para resaltar tu estilo con la calidad premium de Cherry. 
+                            Confeccionada con telas seleccionadas para garantizar durabilidad y un ajuste perfecto.
+                        </p>
+                        
+                        <div class="qv-sizes mb-4">
+                            <label class="fw-bold small mb-2 d-block">TALLA:</label>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-outline-dark rounded-circle size-btn-modal">S</button>
+                                <button class="btn btn-outline-dark rounded-circle size-btn-modal">M</button>
+                                <button class="btn btn-outline-dark rounded-circle size-btn-modal">L</button>
+                            </div>
+                        </div>
+
+                        <button id="btnModalAgregar" class="btn btn-agregar w-100 rounded-pill mt-3">
+                          Añadir al carrito
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="cart-floating-btn" onclick="toggleCart()" style="cursor:pointer;">
+    <i class="bi bi-bag-heart-fill"></i>
+    <span class="badge-count" id="cart-count">0</span>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url_for('static', filename='carrito-compartido.js') }}"></script>
+<script src="script.js"></script>
+<script src="carrito_paginas.js"></script>
+
+</body>
+</html>

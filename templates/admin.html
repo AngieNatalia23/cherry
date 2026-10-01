@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Cherry</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8f9fa;
+            color: #1a1a1a;
+        }
+        .admin-header {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 20px 0;
+        }
+        .cherry-title {
+            color: #C21833;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+        }
+        .card-custom {
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            margin-bottom: 30px;
+        }
+        .card-custom .card-header {
+            background: #ffffff;
+            border-bottom: 1px solid #f0f0f0;
+            padding: 20px;
+            font-weight: 700;
+            border-radius: 12px 12px 0 0;
+        }
+        .table thead th {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+            border-bottom: 2px solid #1a1a1a;
+        }
+        .badge-pendiente { background-color: #fff3cd; color: #856404; }
+        .badge-enviado { background-color: #cce5ff; color: #004085; }
+        .badge-entregado { background-color: #d4edda; color: #155724; }
+
+        select[name="estado"]:has(option[value="pendiente"]:checked) {
+            background-color: #fff3cd;
+            border-color: #ffc107;
+            color: #856404;
+        }
+        select[name="estado"]:has(option[value="enviado"]:checked) {
+            background-color: #f8d7da;
+            border-color: #dc3545;
+            color: #842029;
+        }
+        select[name="estado"]:has(option[value="entregado"]:checked) {
+            background-color: #d1e7dd;
+            border-color: #198754;
+            color: #0f5132;
+        }
+        select[name="estado"] option[value="pendiente"] { background-color: #fff3cd; color: #856404; }
+        select[name="estado"] option[value="enviado"] { background-color: #f8d7da; color: #842029; }
+        select[name="estado"] option[value="entregado"] { background-color: #d1e7dd; color: #0f5132; }
+    </style>
+</head>
+<body>
+<body>
+
+    <header class="admin-header mb-4">
+    <div class="container d-flex justify-content-between align-items-center">
+        <div>
+            <h3 class="cherry-title m-0">CHERRY <span class="text-dark fw-light fs-5">| Panel de Administración</span></h3>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+            <span class="text-muted small">Bienvenido, <strong>{{ session.get('usuario', 'Admin') }}</strong></span>
+            <a href="{{ url_for('index') }}" class="btn btn-outline-dark btn-sm rounded-pill px-3">Ver Tienda</a>
+            <a href="{{ url_for('logout') }}" class="btn btn-danger btn-sm rounded-pill px-3">Cerrar Sesión</a>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+
+    <!-- MENSAJES FLASH -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ 'danger' if category == 'error' else category if category != 'message' else 'info' }} alert-dismissible fade show mb-4" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <!-- TARJETAS DE MÉTRICAS -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-6">
+            <div class="card-custom p-3 d-flex align-items-center">
+                <div class="bg-light p-3 rounded-circle me-3">
+                    <i class="bi bi-bag-check fs-3 text-danger"></i>
+                </div>
+                <div>
+                    <small class="text-muted text-uppercase fw-bold">Total Pedidos</small>
+                    <h3 class="fw-bold m-0">{{ pedidos|length }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card-custom p-3 d-flex align-items-center">
+                <div class="bg-light p-3 rounded-circle me-3">
+                    <i class="bi bi-box-seam fs-3 text-dark"></i>
+                </div>
+                <div>
+                    <small class="text-muted text-uppercase fw-bold">Productos en Catálogo</small>
+                    <h3 class="fw-bold m-0">{{ productos|length }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECCIÓN DE FORMULARIOS: AGREGAR PRODUCTO Y AGREGAR USUARIO -->
+    <div class="row g-4 mb-5">
+        <!-- FORMULARIO AGREGAR PRODUCTO -->
+        <div class="col-lg-6">
+            <div class="card-custom">
+                <div class="card-header bg-danger text-white py-3">
+                    <h5 class="m-0 fw-bold"><i class="bi bi-plus-circle me-2"></i>Agregar Nuevo Producto</h5>
+                </div>
+                <div class="card-body p-4">
+                    <form action="{{ url_for('agregar_producto') }}" method="POST" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Nombre del Producto</label>
+                            <input type="text" name="nombre" class="form-control" placeholder="Ej. Blusa Satinada" required>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Categoría</label>
+                                <select name="id_categoria" class="form-select" required>
+                                    <option value="" disabled selected>Seleccionar...</option>
+                                    <option value="1">Tops, Camisas y Blusas</option>
+                                    <option value="2">Conjuntos</option>
+                                    <option value="3">Vestidos y Faldas</option>
+                                    <option value="4">Colección Masculina</option>
+                                    <option value="5">Pantalones</option>
+                                    <option value="6">Calzado</option>
+                                    <option value="7">Colección Femenina</option>
+                                    <option value="8">Ofertas Especiales</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Precio ($ COP)</label>
+                                <input type="number" step="0.01" name="precio" class="form-control" placeholder="Ej. 85000" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Stock Inicial</label>
+                                <input type="number" name="stock" class="form-control" value="10" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Imagen</label>
+                                <input type="file" name="imagen" class="form-control" accept="image/*" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Descripción</label>
+                            <textarea name="descripcion" class="form-control" rows="2" placeholder="Detalles de la prenda..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-danger w-100 rounded-pill fw-bold">
+                            <i class="bi bi-box-seam me-1"></i> Guardar Producto
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- FORMULARIO AGREGAR USUARIO -->
+        <div class="col-lg-6">
+            <div class="card-custom">
+                <div class="card-header bg-dark text-white py-3">
+                    <h5 class="m-0 fw-bold"><i class="bi bi-person-plus me-2"></i>Registrar Nuevo Usuario</h5>
+                </div>
+                <div class="card-body p-4">
+                    <form action="{{ url_for('agregar_usuario') }}" method="POST">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Nombre</label>
+                                <input type="text" name="nombre" class="form-control" placeholder="Ej. Laura" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Apellido</label>
+                                <input type="text" name="apellido" class="form-control" placeholder="Ej. Gómez">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Correo Electrónico</label>
+                            <input type="email" name="correo" class="form-control" placeholder="usuario@correo.com" required>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Teléfono</label>
+                                <input type="text" name="telefono" class="form-control" placeholder="3001234567">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Rol</label>
+                                <select name="rol" class="form-select" required>
+                                    <option value="cliente" selected>Cliente</option>
+                                    <option value="admin">Administrador</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Contraseña</label>
+                            <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-dark w-100 rounded-pill fw-bold">
+                            <i class="bi bi-person-check me-1"></i> Registrar Usuario
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TABLA DE PEDIDOS Y CLIENTES -->
+<div class="card-custom mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="m-0 fw-bold"><i class="bi bi-receipt me-2"></i>Pedidos y Clientes Recientes</h5>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle m-0">
+                <thead>
+                    <tr>
+                        <th>ID Pedido</th>
+                        <th>Cliente</th>
+                        <th>Correo</th>
+                        <th>Fecha</th>
+                        <th>Total</th>
+                        <th>Estado</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if pedidos %}
+                        {% for p in pedidos %}
+                        <tr>
+                            <td class="fw-bold">#{{ p.id_pedido }}</td>
+                            <td>
+                                <div class="fw-semibold">{{ p.nombre }} {{ p.apellido }}</div>
+                            </td>
+                            <td class="text-muted small">{{ p.correo }}</td>
+                            <td>{{ p.fecha }}</td>
+                            <td class="fw-bold text-success">${{ "{:,.0f}".format(p.total) if p.total else '0' }}</td>
+                            <!-- Cambiar estado -->
+                            <td>
+                                <form action="{{ url_for('cambiar_estado_pedido') }}" method="POST">
+                                    <input type="hidden" name="id_pedido" value="{{ p.id_pedido }}">
+                                    <select name="estado" class="form-select form-select-sm rounded-pill" onchange="this.form.submit()" aria-label="Estado del pedido {{ p.id_pedido }}">
+                                        <option value="pendiente" {% if p.estado == 'pendiente' %}selected{% endif %}>Pendiente</option>
+                                        <option value="enviado" {% if p.estado == 'enviado' %}selected{% endif %}>Enviado</option>
+                                        <option value="entregado" {% if p.estado == 'entregado' %}selected{% endif %}>Entregado</option>
+                                    </select>
+                                </form>
+                            </td>
+                            <!-- Acciones -->
+                            <td class="text-center">
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <button type="button" class="btn btn-outline-dark" onclick="abrirPedido('{{ p.id_pedido }}', false)" title="Ver productos" aria-label="Ver pedido {{ p.id_pedido }}">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-primary" onclick="abrirPedido('{{ p.id_pedido }}', true)" title="Editar pedido" aria-label="Editar pedido {{ p.id_pedido }}">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <form action="{{ url_for('eliminar_pedido', id_pedido=p.id_pedido) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Eliminar el pedido #{{ p.id_pedido }}?');">
+                                        <button type="submit" class="btn btn-outline-danger" title="Eliminar pedido" aria-label="Eliminar pedido {{ p.id_pedido }}">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="7" class="text-center py-4 text-muted">No hay pedidos registrados en la base de datos.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL PARA VER Y EDITAR UN PEDIDO -->
+<div class="modal fade" id="modalGestionPedido" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <form id="formEditarPedido" method="POST">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="tituloGestionPedido">Detalle del Pedido</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="direccionPedido" class="form-label fw-semibold">Dirección de entrega</label>
+                        <input type="text" id="direccionPedido" name="direccion" class="form-control" readonly>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Precio unitario</th>
+                                    <th>Cantidad</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaDetallesProductos"></tbody>
+                        </table>
+                    </div>
+                    <input type="hidden" name="detalles_json" id="detallesPedidoJson">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" id="guardarPedidoBtn" class="btn btn-primary rounded-pill d-none">
+                        <i class="bi bi-save me-1"></i>Guardar cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+    <!-- TABLA DE PRODUCTOS -->
+<div class="card-custom mb-5">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="m-0 fw-bold"><i class="bi bi-grid me-2"></i>Inventario de Productos</h5>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle m-0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Imagen</th>
+                        <th>Categoría</th>
+                        <th>Producto</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if productos %}
+                        {% for prod in productos %}
+                        <tr>
+                            <td class="fw-bold">#{{ prod.id_producto }}</td>
+                            <td>
+                                {% if prod.imagen %}
+                                    <img src="{{ url_for('static', filename=prod.imagen) }}" alt="{{ prod.nombre }}" style="width: 45px; height: 45px; object-fit: cover; border-radius: 6px;">
+                                {% else %}
+                                    <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                                        <i class="bi bi-image text-muted"></i>
+                                    </div>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-1 fw-semibold">
+                                    {{ prod.categoria }}
+                                </span>
+                            </td>
+                            <td class="fw-semibold">{{ prod.nombre }}</td>
+                            <td class="fw-bold">${{ "{:,.0f}".format(prod.precio) }}</td>
+                            <td>
+                                {% if prod.stock > 10 %}
+                                    <span class="badge bg-success-subtle text-success border px-2 py-1">{{ prod.stock }} uds.</span>
+                                {% elif prod.stock > 0 %}
+                                    <span class="badge bg-warning-subtle text-warning border px-2 py-1">{{ prod.stock }} uds.</span>
+                                {% else %}
+                                    <span class="badge bg-danger text-white px-2 py-1">Agotado (0)</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-center">
+                                <!-- Botón que abre el modal de edición usando id_producto -->
+                                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editModal{{ prod.id_producto }}">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                
+                                <!-- Botón eliminar usando id_producto -->
+                                <a href="{{ url_for('eliminar_producto', id_producto=prod.id_producto) }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?');">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+
+                        <!-- Modal de Edición para cada producto -->
+                        <div class="modal fade" id="editModal{{ prod.id_producto }}" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <form action="{{ url_for('editar_producto', id_producto=prod.id_producto) }}" method="POST">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Editar Producto #{{ prod.id_producto }}</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body text-start">
+                                            <div class="mb-3">
+                                                <label class="form-label">Nombre del Producto</label>
+                                                <input type="text" class="form-control" name="nombre" value="{{ prod.nombre }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Precio ($)</label>
+                                                <input type="number" class="form-control" name="precio" value="{{ prod.precio }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Stock</label>
+                                                <input type="number" class="form-control" name="stock" value="{{ prod.stock }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">ID Categoría</label>
+                                                <input type="number" class="form-control" name="id_categoria" value="{{ prod.id_categoria }}" required>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="7" class="text-center py-4 text-muted">No hay productos registrados en la base de datos.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        async function abrirPedido(idPedido, modoEdicion) {
+            const modalElement = document.getElementById('modalGestionPedido');
+            const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+            const tabla = document.getElementById('tablaDetallesProductos');
+            const direccion = document.getElementById('direccionPedido');
+            const formulario = document.getElementById('formEditarPedido');
+            const guardar = document.getElementById('guardarPedidoBtn');
+            const titulo = document.getElementById('tituloGestionPedido');
+            const detallesJson = document.getElementById('detallesPedidoJson');
+
+            titulo.textContent = `${modoEdicion ? 'Editar' : 'Detalle del'} Pedido #${idPedido}`;
+            direccion.readOnly = !modoEdicion;
+            guardar.classList.toggle('d-none', !modoEdicion);
+            formulario.action = `/admin/pedido/editar/${idPedido}`;
+            direccion.value = '';
+            detallesJson.value = '[]';
+            tabla.innerHTML = '<tr><td colspan="4" class="text-center py-3">Cargando productos...</td></tr>';
+            modal.show();
+
+            try {
+                const respuesta = await fetch(`/admin/pedido/${idPedido}`);
+                const resultado = await respuesta.json();
+                if (!respuesta.ok || resultado.status !== 'success') {
+                    throw new Error(resultado.message || 'No se pudo cargar el pedido.');
+                }
+
+                const detalles = resultado.detalles || [];
+                direccion.value = resultado.direccion || '';
+                if (!detalles.length) {
+                    tabla.innerHTML = '<tr><td colspan="4" class="text-center text-muted py-3">No hay productos guardados en este pedido.</td></tr>';
+                    return;
+                }
+
+                tabla.innerHTML = detalles.map((producto, indice) => {
+                    const imagen = producto.imagen
+                        ? (producto.imagen.startsWith('/') ? producto.imagen : `/static/${producto.imagen}`)
+                        : '/static/img/default.jpg';
+                    return `
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    <img src="${imagen}" alt="${producto.producto || 'Producto'}" style="width:40px;height:40px;object-fit:cover" class="rounded">
+                                    <span>${producto.producto || 'Producto no disponible'}</span>
+                                </div>
+                            </td>
+                            <td>$${Number(producto.precio_unitario || 0).toLocaleString('es-CO')}</td>
+                            <td>
+                                <input type="number" min="0" value="${producto.cantidad}" class="form-control form-control-sm cantidad-pedido" data-indice="${indice}" ${modoEdicion ? '' : 'disabled'}>
+                            </td>
+                            <td>$${Number(producto.subtotal || 0).toLocaleString('es-CO')}</td>
+                        </tr>
+                    `;
+                }).join('');
+
+                const pedido = detalles.map(producto => ({
+                    id_detalle: producto.id_detalle,
+                    cantidad: Number(producto.cantidad)
+                }));
+                detallesJson.value = JSON.stringify(pedido);
+                document.querySelectorAll('.cantidad-pedido').forEach(input => {
+                    input.addEventListener('input', () => {
+                        pedido[input.dataset.indice].cantidad = Number(input.value || 0);
+                        detallesJson.value = JSON.stringify(pedido);
+                    });
+                });
+            } catch (error) {
+                tabla.innerHTML = `<tr><td colspan="4" class="text-center text-danger py-3">${error.message}</td></tr>`;
+            }
+        }
+    </script>
+</body>
+</html>

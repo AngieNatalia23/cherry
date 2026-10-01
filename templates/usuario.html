@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Cuenta | Cherry Fashion</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
+</head>
+<body>
+
+    <nav class="navbar navbar-light bg-white border-bottom mb-4">
+        <div class="container">
+            <a class="navbar-brand logo text-danger fw-bold" href="{{ url_for('index') }}">Cherry</a>
+            <a href="{{ url_for('index') }}" class="btn btn-outline-danger btn-sm">Volver a la tienda</a>
+        </div>
+    </nav>
+
+    <div class="container py-4">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm p-4 text-center">
+                    <i class="bi bi-person-circle display-3 text-danger mb-2"></i>
+                    <h5 class="fw-bold mb-0">{{ user.nombre }}</h5>
+                    <p class="text-muted small mb-3">{{ user.email }}</p>
+                    <span class="badge bg-danger-subtle text-danger p-2 mb-3">Cliente VIP</span>
+                    <button class="btn btn-outline-secondary w-100 btn-sm">Cerrar Sesión</button>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="card border-0 shadow-sm p-4">
+                    <h5 class="fw-bold mb-3">Resumen de Actividad</h5>
+                    <div class="row text-center g-3">
+                        <div class="col-6">
+                            <div class="p-3 border rounded bg-light">
+                                <h3 class="fw-bold text-danger m-0">{{ user.pedidos_count }}</h3>
+                                <small class="text-muted">Pedidos Realizados</small>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-3 border rounded bg-light">
+                                <h3 class="fw-bold text-danger m-0">0</h3>
+                                <small class="text-muted">Cupón Activo</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

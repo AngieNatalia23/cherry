@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pantalones - Cherry Fashion</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos-img.css') }}">
+</head>
+<body>
+
+<header class="category-header text-white d-flex align-items-center" style="background-color: #C21833; height: 200px;">
+    <div class="container text-center">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb justify-content-center text-uppercase" style="font-size: 0.8rem; letter-spacing: 2px;">
+                <li class="breadcrumb-item"><a href="{{ url_for('index') }}" class="text-white-50 text-decoration-none">Inicio</a></li>
+                <li class="breadcrumb-item active text-white" aria-current="page">Pantalones</li>
+            </ol>
+        </nav>
+        <h1 class="display-4 fw-bold">PANTALONES</h1>
+    </div>
+</header>
+
+<div id="side-cart" class="cherry-cart">
+    <div class="cart-header d-flex justify-content-between align-items-center p-3">
+        <h5 class="fw-bold m-0">TU BOLSA DE COMPRAS</h5>
+        <button class="btn-close-cart" type="button" onclick="toggleCart()" aria-label="Cerrar carrito" style="background:none; border:none; font-size: 2rem;">&times;</button>
+    </div>
+    <div class="cart-body p-3" id="cart-items-container"></div>
+    <div class="cart-footer p-4">
+        <div class="d-flex justify-content-between mb-4">
+            <span class="fw-bold">TOTAL:</span>
+            <span class="fw-bold text-danger fs-5" id="cart-total">$0</span>
+        </div>
+        <a href="{{ url_for('checkout') }}" class="btn btn-danger w-100 rounded-pill mb-2">Finalizar pedido</a>
+        <button class="btn btn-outline-dark w-100 rounded-pill" onclick="toggleCart()">Seguir comprando</button>
+    </div>
+</div>
+
+<div class="container my-5">
+    <h2 class="text-center mb-5 fw-bold">NUESTRA COLECCIÓN DE PANTALONES</h2>
+
+    <div class="row g-4">
+        {% for producto in productos %}
+        <div class="col-md-3">
+            <div class="product-card shadow-sm border-0 rounded-4 overflow-hidden h-100 d-flex flex-column">
+                <div class="img-container position-relative bg-light" style="height: 300px;">
+                    <img src="{{ url_for('static', filename=producto.imagen) }}" class="img-fluid w-100 h-100 object-fit-contain" alt="{{ producto.nombre }}">
+                    <span class="badge-tag">Nuevo</span>
+                    <div class="hover-overlay">
+                        <button type="button" class="btn btn-light btn-sm rounded-pill shadow-sm position-absolute bottom-0 start-50 translate-middle-x mb-3 px-3 py-2 quick-view-btn fw-semibold"
+                                onclick="llenarModal(this)"
+                                data-name="{{ producto.nombre }}"
+                                data-price="{{ producto.precio }}"
+                                data-image="{{ url_for('static', filename=producto.imagen) }}"
+                                data-bs-toggle="modal" data-bs-target="#quickViewModal">
+                            <i class="bi bi-eye me-1"></i> Vista rápida
+                        </button>
+                    </div>
+                </div>
+                <div class="p-3 text-center d-flex flex-column justify-content-between flex-grow-1">
+                    <div>
+                        <small class="text-muted text-uppercase">{{ producto.categoria }}</small>
+                        <h6 class="fw-bold mb-2">{{ producto.nombre }}</h6>
+                        <p class="text-danger fw-bold fs-5">${{ "{:,.0f}".format(producto.precio) }}</p>
+                    </div>
+                    <button class="btn-agregar w-100 rounded-pill"
+                            data-name="{{ producto.nombre }}"
+                            data-price="{{ producto.precio }}"
+                            data-image="{{ url_for('static', filename=producto.imagen) }}"
+                            onclick="agregarCarrito(this.dataset.name, this.dataset.price, this.dataset.image)">
+                        <i class="bi bi-bag"></i> Añadir al carrito
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+   
+<!-- FOOTER -->
+<footer class="footer-pro bg-dark text-white pt-5 pb-3">
+    <div class="container">
+        <div class="row g-4 mb-5">
+            <div class="col-md-3">
+                <h2 class="logo text-danger mb-3">Cherry</h2>
+                <p class="small text-muted">Moda femenina moderna que celebra a 
+                    la mujer auténtica. 
+                   Calidad, estilo y confianza en cada prenda.</p>
+                <div class="contact-info small text-muted">
+                    <p><i class="bi bi-envelope me-2"></i> contactanos@cherryfashion.co</p>
+                    <p><i class="bi bi-telephone me-2"></i> +57 321 240 7075</p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <h6 class="fw-bold mb-4">Comprar</h6>
+                <ul class="list-unstyled small text-muted">
+                    <li class="mb-2">
+                       <a href="{{ url_for('ver_categoria', id_categoria=7) }}" class="text-decoration-none text-muted"> Mujer </a>
+                       </li>
+                    <li class="mb-2">
+                        <a href="{{ url_for('ver_categoria', id_categoria=4) }}" class="text-decoration-none text-muted">Hombre</a>
+                    </li>
+                    <li class="mb-2">
+                     <a href="{{ url_for('ofertas') }}" class="text-decoration-none text-muted">Ofertas</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+            <h5 class="text-white fw-bold">ATENCIÓN AL CLIENTE</h5>
+            <ul class="list-unstyled">
+                <li class="mb-2"><a href="{{ url_for('soporte_center') }}" class="text-decoration-none text-muted"><i class="bi bi-headset me-2"></i> Centro de Soporte</a></li>
+                <li class="mb-2"><a href="{{ url_for('privacidad') }}" class="text-decoration-none text-muted"><i class="bi bi-lock me-2"></i> Política de Privacidad</a></li>
+                <li class="mb-2"><a href="{{ url_for('terminos') }}" class="text-decoration-none text-muted"><i class="bi bi-file-text me-2"></i> Términos de Uso</a></li>
+                <li class="mb-2"><a href="{{ url_for('faq') }}" class="text-decoration-none text-muted"><i class="bi bi-question-circle me-2"></i> Preguntas Frecuentes</a></li>
+            </ul>
+            </div>
+        </div>
+        <hr class="border-secondary">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <p class="small text-muted mb-0">© 2026 Cherry Fashion. Todos los derechos reservados.</p>
+            <div class="payment-icons d-flex gap-2 opacity-50">
+                <i class="bi bi-credit-card-2-front fs-4"></i>
+                <i class="bi bi-wallet2 fs-4"></i>
+                <i class="bi bi-paypal fs-4"></i>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<div class="modal fade" id="quickViewModal" tabindex="-1" aria-labelledby="quickViewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content rounded-5 border-0 shadow-lg overflow-hidden">
+            <div class="modal-body p-0">
+                <button type="button" class="btn-close position-absolute top-0 end-0 m-3 z-3" data-bs-dismiss="modal" aria-label="Close"></button>
+                
+                <div class="row g-0">
+                    <div class="col-md-6">
+                        <div class="qv-image-container h-100">
+                            <img id="qv-img" src="" class="img-fluid h-100 w-100" style="object-fit: contain; min-height: 450px;" alt="Producto Cherry">
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 p-4 p-lg-5 d-flex flex-column justify-content-center">
+                        <small id="qv-cat" class="text-uppercase text-muted fw-bold ls-2 mb-1" style="font-size: 0.7rem; letter-spacing: 2px;"></small>
+                        <h2 id="qv-name" class="fw-bold mb-3"></h2>
+                        
+                        <div class="qv-price mb-4">
+                            <span id="qv-price-new" class="fs-3 fw-bold text-dark"></span>
+                            <span id="qv-price-old" class="text-muted text-decoration-line-through ms-2 fs-5"></span>
+                        </div>
+                        
+                        <p class="text-muted small mb-4" id="qv-description">
+                            Nuestra prenda estrella diseñada para resaltar tu estilo con la calidad premium de Cherry. 
+                            Confeccionada con telas seleccionadas para garantizar durabilidad y un ajuste perfecto.
+                        </p>
+                        
+                        <div class="qv-sizes mb-4">
+                            <label class="fw-bold small mb-2 d-block">TALLA:</label>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-outline-dark rounded-circle size-btn-modal">S</button>
+                                <button class="btn btn-outline-dark rounded-circle size-btn-modal">M</button>
+                                <button class="btn btn-outline-dark rounded-circle size-btn-modal">L</button>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn-agregar py-3 shadow-sm" id="qv-add-to-cart">
+                            <i class="bi bi-bag"></i> Agregar al carrito
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="cart-floating-btn" onclick="toggleCart()">
+    <i class="bi bi-bag-heart-fill"></i>
+    <span class="badge-count" id="cart-count">0</span>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    let carrito = JSON.parse(sessionStorage.getItem('cherryCarrito') || '[]');
+    let productoVistaRapida = null;
+
+    document.addEventListener('click', function (event) {
+        const enlaceLogout = event.target.closest('a[href="/logout"], a[href*="/logout"]');
+        if (enlaceLogout) {
+            sessionStorage.removeItem('cherryCarrito');
+        }
+    });
+
+    function formatoPrecio(valor) {
+        return '$' + Number(valor).toLocaleString('es-CO');
+    }
+
+    function toggleCart() {
+        document.getElementById('side-cart').classList.toggle('active');
+    }
+
+    function agregarCarrito(nombre, precio, imagen, talla = 'Sin talla') {
+        if (!imagen) {
+            const fuente = document.activeElement?.closest('.product-card')?.querySelector('img')?.getAttribute('src') || '';
+            imagen = fuente.startsWith('imagenes/') ? `/static/${fuente}` : fuente;
+        }
+        const productoExistente = carrito.find(item => item.nombre === nombre && item.talla === talla);
+
+        if (productoExistente) {
+            productoExistente.cantidad += 1;
+        } else {
+            carrito.push({ nombre, precio: Number(precio), imagen, talla, cantidad: 1 });
+        }
+
+        actualizarCarrito();
+        document.getElementById('side-cart').classList.add('active');
+    }
+
+    function cambiarCantidad(indice, cambio) {
+        carrito[indice].cantidad += cambio;
+        if (carrito[indice].cantidad <= 0) carrito.splice(indice, 1);
+        actualizarCarrito();
+    }
+
+    function eliminarDelCarrito(indice) {
+        carrito.splice(indice, 1);
+        actualizarCarrito();
+    }
+
+    function actualizarCarrito() {
+        sessionStorage.setItem('cherryCarrito', JSON.stringify(carrito));
+        const container = document.getElementById('cart-items-container');
+        const totalElement = document.getElementById('cart-total');
+        const countElement = document.getElementById('cart-count');
+        const total = carrito.reduce((suma, item) => suma + item.precio * item.cantidad, 0);
+        const cantidadTotal = carrito.reduce((suma, item) => suma + item.cantidad, 0);
+
+        countElement.textContent = cantidadTotal;
+        totalElement.textContent = formatoPrecio(total);
+
+        if (!carrito.length) {
+            container.innerHTML = '<p class="text-center text-muted py-4">Tu carrito está vacío.</p>';
+            return;
+        }
+
+        container.innerHTML = carrito.map((item, indice) => `
+            <div class="cart-item d-flex gap-2 mb-3 border-bottom pb-3">
+                <img src="${item.imagen}" alt="${item.nombre}">
+                <div class="flex-grow-1">
+                    <h6 class="mb-1">${item.nombre}</h6>
+                    <small class="text-muted">Talla: ${item.talla}</small>
+                    <div class="d-flex align-items-center justify-content-between mt-2">
+                        <span class="fw-bold text-danger">${formatoPrecio(item.precio * item.cantidad)}</span>
+                        <div class="btn-group btn-group-sm" role="group" aria-label="Cantidad">
+                            <button class="btn btn-outline-secondary" type="button" onclick="cambiarCantidad(${indice}, -1)">-</button>
+                            <span class="btn btn-light">${item.cantidad}</span>
+                            <button class="btn btn-outline-secondary" type="button" onclick="cambiarCantidad(${indice}, 1)">+</button>
+                        </div>
+                    </div>
+                    <button class="btn btn-link btn-sm text-danger p-0 mt-1" type="button" onclick="eliminarDelCarrito(${indice})">Eliminar</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function llenarModal(button) {
+        productoVistaRapida = {
+            nombre: button.dataset.name,
+            precio: Number(button.dataset.price),
+            imagen: button.dataset.image
+        };
+
+        document.getElementById('qv-img').src = productoVistaRapida.imagen;
+        document.getElementById('qv-img').alt = productoVistaRapida.nombre;
+        document.getElementById('qv-name').textContent = productoVistaRapida.nombre;
+        document.getElementById('qv-price-new').textContent = formatoPrecio(productoVistaRapida.precio);
+        document.querySelectorAll('.size-btn-modal').forEach((boton, indice) => {
+            boton.classList.toggle('active', indice === 0);
+            boton.onclick = () => {
+                document.querySelectorAll('.size-btn-modal').forEach(item => item.classList.remove('active'));
+                boton.classList.add('active');
+            };
+        });
+    }
+
+    document.getElementById('qv-add-to-cart').addEventListener('click', () => {
+        if (!productoVistaRapida) return;
+        const talla = document.querySelector('.size-btn-modal.active')?.textContent.trim() || 'Sin talla';
+        agregarCarrito(productoVistaRapida.nombre, productoVistaRapida.precio, productoVistaRapida.imagen, talla);
+        bootstrap.Modal.getOrCreateInstance(document.getElementById('quickViewModal')).hide();
+    });
+
+    actualizarCarrito();
+</script>
+
+</body>
+</html>
